@@ -25,9 +25,6 @@ Pile::Pile()
 
   shuffleDeck();
 
-  // DrawPile drawPile(cards);
-  // TargetPile targetPile;
-  // Hand hand;
 
 
 
@@ -50,14 +47,16 @@ void Pile::shuffleDeck()
   shuffle( begin( cards ), end( cards ), mt);
 }
 
-void Pile::dealHand()
-{
-
-};
 
 vector<int> Pile::getCards()
 {
   return cards;
+}
+
+void Pile::bootstrap()
+{
+  displayGame();
+  displayGameMenu();
 }
 
 int Pile::displayGameMenu()
@@ -71,7 +70,8 @@ int Pile::displayGameMenu()
        << "\n2: To move the draw card"
        << "\n3: To select one of the hand cards"
        << "\n4: To reset the game"
-       << "\n5: to quit";
+       << "\n5: to quit"
+       << endl;
 
   cin >> menuSelection;
   return menuSelection;
@@ -111,28 +111,44 @@ void Pile::displayHandMenu()
 
 void Pile::displayGame()
 {
-  cout << endl;
-  cout << "|       | |       |            " << " |   ♥️  | " <<  " |   ♦️  | " <<  " |   ♣️  | " <<  " |   ♠️  | " << endl;
-  cout << "+-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl
-       << "|   ?   | |   0   |            " << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
-       << "|   ?   | |   0   |            " << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
-       << "|   ?   | |   0   |            " << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
-       << "+-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl << endl;
+  string s; //suit
+  if (Pile::getCards().front() < 14)
+    s = "♠️";
+  else if (Pile::getCards().front() > 14 && Pile::getCards().front() < 27)
+    s = "♣️";
+  else if (Pile::getCards().front() > 28 && Pile::getCards().front() < 40)
+    s = "♦️";
+  else
+    s = "♥️";
 
-  cout << "|   1   |" << " |   2   | " <<  " |   3   | " <<  " |   4   | " <<  " |   5   | " <<  " |   6   | " <<  " |   7   | " << endl;
-  cout << "+-------+" << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl
-       << "|  num  |" << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
-       << "|  num  |" << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
-       << "|  num  |" << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
-       << "+-------+" << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl;
+  // !TODO Refactor face cards
+  int n = Pile::getCards().front() % 13;
+
+  cout << endl;
+  cout << " |       | |       |            " << " |   ♠️  | " <<  " |   ♣️  | " <<  " |   ♦️  | " <<  " |   ♥️  | " << endl;
+  cout << " +-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl
+       << " |   ?   | |   "<<n<<"   |            " << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
+       << " |   ?   | |   "<<s<<"  |            " << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
+       << " |   ?   | |   "<<n<<"   |            " << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
+       << " +-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl << endl;
+
+  cout << " |   1   |" << " |   2   | " <<  " |   3   | " <<  " |   4   | " <<  " |   5   | " <<  " |   6   | " <<  " |   7   | " << endl;
+  cout << " +-------+" << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl
+       << " |  num  |" << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
+       << " |  num  |" << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
+       << " |  num  |" << " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " <<  " |  num  | " << endl
+       << " +-------+" << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl;
+
 }
 
 /*=DrawPile
 ************/
 DrawPile::DrawPile(vector<int> visitingCards)
 {
+
   for(int i = 0;i < 24; i++)
     cards.push( visitingCards[i] );
+
 }
 
 queue<int> DrawPile::getCards()
@@ -142,8 +158,10 @@ queue<int> DrawPile::getCards()
 
 void DrawPile::DrawCard()
 {
+
   cards.push( cards.front() );
   cards.pop();
+
 }
 
 /*=TargetPile

@@ -58,7 +58,7 @@ public:
   vector<int> getCards();
   void shuffleDeck();
 
-  void bootstrap();
+  int bootstrap();
 
   int displayGameMenu();
   void displayDrawMenu();

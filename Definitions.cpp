@@ -20,13 +20,12 @@
 Pile::Pile()
 {
 
+  cout << "\nWelcome to Klondike's solitaire!";
+
   for(int i = 1;i <= 52; i++)
     cards.push_back(i);
 
   shuffleDeck();
-
-
-
 
 }
 
@@ -53,10 +52,18 @@ vector<int> Pile::getCards()
   return cards;
 }
 
-void Pile::bootstrap()
+int Pile::bootstrap()
 {
-  displayGame();
-  displayGameMenu();
+
+  int selection = displayGameMenu();
+
+  while( selection < 1 || selection > 5 ){
+    cout << "\nInvalid input, please choose a number between 1 & 5\n";
+    selection = displayGameMenu();
+  }
+
+  return selection;
+
 }
 
 int Pile::displayGameMenu()
@@ -64,8 +71,7 @@ int Pile::displayGameMenu()
 
   int menuSelection;
 
-  cout << "\nWelcome to Klondike's solitaire!"
-       << "\nHere are the menu options, select a number with the corrisponding options"
+  cout << "\nHere are the menu options, select a number with the corrisponding options"
        << "\n1: To Draw a card"
        << "\n2: To move the draw card"
        << "\n3: To select one of the hand cards"
@@ -159,8 +165,13 @@ queue<int> DrawPile::getCards()
 void DrawPile::DrawCard()
 {
 
+  cout << "\ncards.front(): " << cards.front() << " cards.back(): " << cards.back()
+       << " Pushing front card to back";
   cards.push( cards.front() );
+  cout << "\ncards.back(): " << cards.back() << " Popping front card off the list!";
+
   cards.pop();
+  cout << "\ncards.front(): " << cards.front() << " cards.back(): " << cards.back();
 
 }
 

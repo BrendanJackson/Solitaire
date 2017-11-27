@@ -15,17 +15,38 @@
 int main()
 {
   cout << endl;
-
+  // main loop control variable
+  int selection;
   // Initial game setup
   Pile solitaire;
   DrawPile drawPile( solitaire.getCards() );
   Hand hand( solitaire.getCards() );
 
-  // Start the game
-  solitaire.bootstrap();
+  // I want to loop back until the user selection is equal to 5
+  do{
+    // Start the game
+    selection = solitaire.bootstrap();
+    switch (selection){
+      // 1: To Draw a card
+      case 1 : cout << "1 was selected";
+        drawPile.DrawCard();
+        break;
+      // 2: To move the draw card
+      case 2 : cout << "2 was selected";
+        break;
+      // 3: To select one of the hand cards
+      case 3 : cout << "3 was selected";
+        break;
+      // 4: To reset the game
+      case 4 : cout << "4 was selected";
+        break;
+      // 5: to quit
+      case 5 : cout << "5 was selected";
+        break;
+    }
+  }while(selection != 5);
 
-
-
+  cout << "\nThanks for playing!";
   cout << endl;
 }
 

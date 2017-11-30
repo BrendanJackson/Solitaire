@@ -1,7 +1,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Declarations
+| Pile
 |--------------------------------------------------------------------------
 | aggregate like data into container classes where it makes sense to do it,
 | because it's It's generally easier to pass around an object than a bunch of parameters.
@@ -29,7 +29,15 @@
 | "♦️"
 | "♣️"
 | "♠️"
+| Each data structure will need to be updated, and also update the "displayGame" method
+| in theory, I should be able to do everything the same way I've been doing it
+| but on a grander scale. Parent > methods > Child > methods > main?
+| What if my parent method needs child data though?
+| Or can I just make new methods for the children, passing in data from the other objects?
 */
+
+#ifndef PILE_H
+#define PILE_H
 
 #include <iostream>
 #include <vector>
@@ -43,9 +51,9 @@
 #include <chrono>
 #include <random>       // std::default_random_engine
 #include <stack>
+#include <iomanip>
 
 using namespace std;
-
 
 class Pile
 {
@@ -64,50 +72,9 @@ public:
   void displayDrawMenu();
   void displayHandMenu();
 
+// DrawPile drawPile, Hand hand, TargetPile targetPile
   void displayGame();
 
 };
 
-class DrawPile : public Pile
-{
-protected:
-  queue<int> cards;
-public:
-  DrawPile(vector<int> visitingCards);
-  void DrawCard();
-
-  // getters
-  queue<int> getCards();
-};
-
-class TargetPile : public Pile
-{
-protected:
-
-public:
-  // TargetPile();
-};
-
-class Hand : public Pile
-{
-protected:
-  deque<int> hand1;
-  deque<int> hand2;
-  deque<int> hand3;
-  deque<int> hand4;
-  deque<int> hand5;
-  deque<int> hand6;
-  deque<int> hand7;
-
-public:
-  Hand(vector<int> visitingCards);
-
-  // getters
-  deque<int> getHand1();
-  deque<int> getHand2();
-  deque<int> getHand3();
-  deque<int> getHand4();
-  deque<int> getHand5();
-  deque<int> getHand6();
-  deque<int> getHand7();
-};
+#endif

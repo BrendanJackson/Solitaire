@@ -1,52 +1,106 @@
 #include "TargetPile.h"
 
-// TargetPile::TargetPile()
-// {
-//
-// }
+bool TargetPile::moveToTarget(int card)
+{
+  cout << "\nMoving to target pile";
+  bool pop = false;
+  // Data Validation for cards
+  if (card >= 1 && card <= 13){
+
+    // Makes Ace the 1st card in the stack always
+    if( spades.empty() && card == 1){
+      spades.push(card);
+      pop = true;
+
+    } else if ( spades.empty() && card != 1 )
+      cout << "\nThe first card must be an Ace";
+    // Makes All cards after the Ace has been entered follow face
+    else if ( spades.top() == card - 1){
+      spades.push(card);
+      pop = true;
+
+    }
+    else {
+      cout << "\nYou can only place a card that is 1 value higher than the previous card here";
+    }
+
+  } else if (card >= 14 && card <= 26){
+
+    // Makes Ace the 1st card in the stack always
+    if( clubs.empty() && card == 1){
+        clubs.push(card);
+        pop = true;
+    } else if ( clubs.empty() && card != 1 )
+      cout << "\nThe first card must be an Ace";
+    // Makes All cards after the Ace has been entered follow face
+    else if ( clubs.top() == card - 1){
+      clubs.push(card);
+      pop = true;
+    } else {
+      cout << "\nYou can only place a card that is 1 value higher than the previous card here";
+    }
+
+  } else if (card >= 27 && card <= 39){
+
+    // Makes Ace the 1st card in the stack always
+    if( diamonds.empty() && card == 1){
+        diamonds.push(card);
+        pop = true;
+    } else if ( diamonds.empty() && card != 1 )
+      cout << "\nThe first card must be an Ace";
+    // Makes All cards after the Ace has been entered follow face
+    else if ( diamonds.top() == card - 1){
+      diamonds.push(card);
+      pop = true;
+    } else {
+      cout << "\nYou can only place a card that is 1 value higher than the previous card here";
+    }
+
+  } else if (card >= 40 && card <= 52){
+
+    // Makes Ace the 1st card in the stack always
+    if( hearts.empty() && card == 1){
+      hearts.push(card);
+      pop = true;
+
+    } else if ( hearts.empty() && card != 1 )
+      cout << "\nThe first card must be an Ace";
+    // Makes All cards after the Ace has been entered follow face
+    else if ( hearts.top() == card - 1){
+      hearts.push(card);
+      pop = true;
+    } else {
+      cout << "\nYou can only place a card that is 1 value higher than the previous card here";
+    }
+
+  } else
+    cout << "\nTargetPile ERROR";
+
+
+  return pop;
+}
+
 
 // DrawPile drawPile, Hand hand, TargetPile targetPile
-void TargetPile::displayGame( Pile pile, DrawPile drawPile, Hand hand )
+void TargetPile::displayGame( DrawPile drawPile )
 {
   // Draw Variables
   string s; //suit
   int n; // number
 
 
-
-
-  // Get the cards suit
-  if (drawPile.getCards().front() < 14)
-    s = "♠️";
-  else if (drawPile.getCards().front() > 14 && drawPile.getCards().front() < 27)
-    s = "♣️";
-  else if (drawPile.getCards().front() > 28 && drawPile.getCards().front() < 40)
-    s = "♦️";
-  else
-    s = "♥️";
-
-    // !TODO Refactor face cards
-    // Get the cards number
-    n = drawPile.getCards().front() % 13;
-    if (n == 0)
-      n = 13; //handles king exception
-
-
+  s = getSuit( drawPile.getCards().front() );
+  n = getFace( drawPile.getCards().front() );
+  checkFace(n);
   cout << endl;
   cout << " | Draw1 | | Draw2 |            " << " |   ♠️  | " <<  " |   ♣️  | " <<  " |   ♦️  | " <<  " |   ♥️  | " << endl;
   cout << " +-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl;
 
 // suit
-  if (n > 1 && n < 11)
-    cout  << " |   ?   | |   "<<n<<"   |" ;
-  else if( n == 1)
-    cout  << " |   ?   | |   A   |" ;
-  else if( n == 11)
-    cout  << " |   ?   | |   J   |" ;
-  else if( n == 12)
-    cout  << " |   ?   | |   Q   |" ;
-  else
-    cout  << " |   ?   | |   K   |" ;
+
+  cout  << " |   ?   | |   ";
+  checkFace( n );
+  cout << "   |" ;
 
 // space
 cout << "            " ;
@@ -116,7 +170,10 @@ if(diamonds.size() != 0 ){
 // suit
   cout << " |   ?   | |   "<<s<<"  |            " << " |   ♠️  | " <<  " |   ♣️  | " <<  " |   ♦️  | " <<  " |   ♥️  | " << endl;
 
-  cout     << " |   ?   | |   "<<n<<"   |";
+  // face
+  cout  << " |   ?   | |   ";
+  checkFace( n );
+  cout << "   |" ;
 
   // Card Values
   // space
@@ -187,100 +244,90 @@ if(diamonds.size() != 0 ){
   cout << endl;
   cout     << " +-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl << endl;
 
-  displayHand( hand );
+
+  // displayHand( hand.getHands() );
 
 
 }
 
 
-void TargetPile::displayHand( Hand hand )
+void TargetPile::displayHand( vector< deque<int> > hands )
 {
   cout << " |   1   | |   2   |  |   3   |  |   4   |  |   5   |  |   6   |  |   7   | " << endl;
   cout << " +-------+ +-------+  +-------+  +-------+  +-------+  +-------+  +-------+ " << endl;
-    vector< deque<int> > hands; //vector of type deque<int>
-    hands.push_back( hand.getHand1() );
-    hands.push_back( hand.getHand2() );
-    hands.push_back( hand.getHand3() );
-    hands.push_back( hand.getHand4() );
-    hands.push_back( hand.getHand5() );
-    hands.push_back( hand.getHand6() );
-    hands.push_back( hand.getHand7() );
 
-    int maxSize = 0;
-    for (int i = 0; i < hands.size(); i++) {
-      for (int j = 0; j < hands[i].size(); j++) {
-        if ( maxSize < hands[i].size() ) {
-          maxSize = hands[i].size();
-          cout << "\nnew maxSize: " << maxSize;
+
+
+  int maxSize = 0;
+  cout << endl;
+  // display hands in columns
+  for (int i = 0; i < hands.size(); i++) {
+    maxSize = hands[i].size();
+    cout << "["<<i<<"]Size:" << maxSize << "  ";
+
+  }
+
+  size_t n = max_element( hands.begin(), hands.end(),
+    [](  const deque<int> &x, const deque<int> &y )
+      {
+        return x.size() < y.size();
+      }
+  )->size();
+cout << endl;
+  for ( size_t i = 0; i < n; i++)
+  {
+    for ( size_t j = 0; j < hands.size(); j++ )
+    {
+        cout << setw( 8 );
+        if ( i < hands[j].size() )
+        {
+          cout << setw(6) << fixed << right;
+          checkFace(getFace(hands[j][i]));
+          cout << getSuit(hands[j][i]);
         }
-      }
+        else
+        {
+            cout << "";
+        }
     }
 
-    for (int j = 0; j < maxSize; j++) {
-      cout << endl;
-      for(int i = 0;i < 7;i++){
-        cout << setw(10) << fixed;
-
-        if(hands[i][j] == 0)
-          cout << " ";
-        else if (
-          (hands[i][j] > 1 && hands[i][j] < 11) ||
-          (hands[i][j] > 14 && hands[i][j] < 24) ||
-          (hands[i][j] > 27 && hands[i][j] < 37) ||
-          (hands[i][j] > 40 && hands[i][j] < 50)
-        ){
-
-          int temp = hands[i][j] % 13;
-          if (temp == 0)
-            temp = 13;
-
-            cout << temp ;
-
-        }  else
-          cout << getCardValue( hands[i][j] ) ;
-
-          // getSuit
-          if (hands[i][j] >= 1 && hands[i][j] <= 13)
-           cout << spade;
-          else if (hands[i][j] >= 14 && hands[i][j] <= 26 )
-           cout << club;
-          else if (hands[i][j] >= 27 && hands[i][j] <= 39 )
-           cout << diamond;
-          else if (hands[i][j] >= 40 && hands[i][j] <= 52 )
-           cout << heart;
-          else
-           cout << "  ";
-
-
-      }
-    }
-
-
+    cout << endl;
+  }
+    // end display hands in columns
 
   cout << endl;
 
 }
 
 
-string TargetPile::getCardValue(int cardNumber)
+stack <int> TargetPile::getSpades()
 {
-  string showCard;
+  return spades;
+}
+stack <int> TargetPile::getClubs()
+{
+  return clubs;
+}
+stack <int> TargetPile::getDiamonds()
+{
+  return diamonds;
+}
+stack <int> TargetPile::getHearts()
+{
+  return hearts;
+}
 
-  cardNumber = cardNumber % 13;
-  if (cardNumber == 0)
-    cardNumber = 13;
+int TargetPile::gameOver()
+{
 
-  if(cardNumber != 0 ){
-    if( cardNumber == 1)
-      showCard =  "A" ;
-    else if( cardNumber == 11)
-      showCard = "J" ;
-    else if( cardNumber == 12)
-      showCard = "Q" ;
-    else
-      showCard = "K" ;
-  } else
-    showCard = "?" ;
+  if (
+    (spades.top() == 13)
+    && (clubs.top() == 26)
+    && (diamonds.top() == 39)
+    && (hearts.top() == 52)
+  )
+    return 4;
 
-  return showCard;
+  return 0;
+
 }

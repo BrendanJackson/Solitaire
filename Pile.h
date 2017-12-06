@@ -1,4 +1,3 @@
-
 /*
 |--------------------------------------------------------------------------
 | Pile
@@ -61,7 +60,7 @@ protected:
     vector<int> cards;
 
 public:
-  Pile();
+  void createDeck();
 
   vector<int> getCards();
   void shuffleDeck();
@@ -71,9 +70,15 @@ public:
   int displayGameMenu();
   void displayDrawMenu();
   void displayHandMenu();
-
 // DrawPile drawPile, Hand hand, TargetPile targetPile
   void displayGame();
+
+  // gets the number of the card, 1-13
+  int getFace(int number);
+  void checkFace(int number);
+  string getSuit(int number);
+
+
 
 };
 

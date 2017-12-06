@@ -29,12 +29,13 @@ public:
   DrawPile( vector<int> visitingCards );
   void drawCard();
 
-  int getCardValue( Hand handObject, int handNumber );
   deque<int> getHand( Hand handObject, int handNumber );
   void moveCard( deque<int> hand );
 
   // getters
   queue<int> getCards();
+
+  void popCard();
 };
 
 #endif

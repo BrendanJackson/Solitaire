@@ -16,16 +16,19 @@
 
 int main()
 {
-  cout << endl;
+  system("clear");
   // main loop control variable
   int selection;
-  int cardValue;
+  vector<int> pseudoStack;
+
   // Initial game setup.
   // !TODO: Set constructors as virtual, there are 3 instances of the game running
 
   Pile solitaire;
+  solitaire.createDeck();
   DrawPile drawPile( solitaire.getCards() );
-  Hand hand( solitaire.getCards() );
+  Hand hand;
+  hand.fillHand( solitaire.getCards() );
   TargetPile targetPile;
 
   // Welcome message
@@ -34,18 +37,64 @@ int main()
 
   // I want to loop back until the user selection is equal to 5
   do{
-    targetPile.displayGame(solitaire, drawPile, hand);
+    targetPile.displayGame(drawPile);
+    targetPile.displayHand( hand.getHands() );
     // Start the game
     selection = solitaire.bootstrap();
+
     switch (selection){
       // 1: To Draw a card
-      case 1 : cout << "1 was selected";
+      case 1 :
         drawPile.drawCard();
         break;
       // 2: To move the draw card
-      case 2 : cout << "2 was selected";
-        solitaire.displayHandMenu();
+      case 2 :
+        solitaire.displayDrawMenu();
+
+        int targetHand;
+        cin >> targetHand;
+
+        // sends you back to the menu
+        if (targetHand == 8)
+          break;
+
+        // initial validation
+        while (targetHand < 0 || targetHand > 8){
+          cout << "\ninvalid input, enter a number 0-8.\n";
+          cin >> targetHand;
+        }
+
+        // cout << "\nDraw card is: " << drawPile.getFace( drawPile.getCards().front() );
+        int drawCard;
+        drawCard = drawPile.getFace( drawPile.getCards().front() );
+
+        // sends draw card to targetPiles
+        if(targetHand == 0){
+          bool pop = false;
+          pop = targetPile.moveToTarget( drawCard );
+
+          if (pop == true){
+            drawPile.popCard();
+          }
+
+          break;
+        }
+
+        hand.getHands().clear();
+        hand.getHands()[targetHand-1].push_front( drawCard );
+        break;
+
+      // 3: To select one of the hand cards
+      case 3 :
+        hand.displayHandMenu();
         int handNumber;
+        int targetHandNumber; //clears old result
+        int popAmount; // amount to be removed from vector after move is completed
+        bool moveable;
+
+        pseudoStack.clear();
+
+
         cin >> handNumber;
 
         // initial validation
@@ -54,53 +103,84 @@ int main()
           system("clear");
           cin >> handNumber;
         }
-        cardValue = drawPile.getCardValue( hand, handNumber );
-        // Game logic validation
-        while(
-          // Prevent user from moving anything but a king to an empty hand
-          ( drawPile.getCards().front() != 13 && drawPile.getHand( hand, handNumber ).size() == 0 )
-          ||// Prevent user from moving any card but "1 less" than the 1st visible card on the hand
-          ( drawPile.getCards().front() != cardValue -1 )
-        ) {
-          if ( drawPile.getCards().front() != 13 && drawPile.getHand( hand, handNumber ).size() == 0 ){
 
-            cout << "\n Invalid move, you can only move a king to an empty hand, please try another action\n";
-            solitaire.displayHandMenu();
-            system("clear");
-            cin >> handNumber;
+        // sends  card to targetPiles
+        if(handNumber == 8)
+          break;
 
-          } else {
 
-            cout << "\n You can only put a card on top of a card that is 1 higher, please try another action\n";
-            solitaire.displayHandMenu();
-            system("clear");
-            cin >> handNumber;
 
+        pseudoStack = hand.checkHand( handNumber );
+        if (pseudoStack.size() == 0){
+          cout << "\nThis hand is empty, try something else";
+          break;
+        }
+
+        cout << "\nHow many cards would you like to move?";
+        pseudoStack = hand.selectCards( pseudoStack );
+        popAmount = pseudoStack.size();
+
+
+        targetPile.displayHand( hand.getHands() );
+
+        cout << "\nWhich hand would you like to move your selected card(s) to?";
+        // Get Target Hand
+        hand.displayHandMenu();
+
+        cin >> targetHandNumber;
+
+        // initial validation
+        while (
+          (targetHandNumber < 1 || targetHandNumber > 8)
+          || (targetHandNumber == handNumber)
+        ){
+
+          if (targetHandNumber < 1 || targetHandNumber > 8){
+            cout << "\ninvalid input, enter a number 1-8.\n";
+            hand.displayHandMenu();
+            cin >> targetHandNumber;
+          }
+
+          if (targetHandNumber == handNumber){
+            cout << "\nYou cannot move your hand to the same hand, please select another hand.\n";
+            hand.displayHandMenu();
+            cin >> targetHandNumber;
           }
 
         }
 
-
-        if (handNumber == 8)
+        // sends  card to targetPiles
+        if( targetHandNumber == 8 )
           break;
+        // End Get Target Hand
 
-        drawPile.moveCard( drawPile.getHand( hand, handNumber ) );
+        moveable = hand.checkTargetHand( targetHandNumber, pseudoStack );
+
+        // moves pseudoStack ontop of TargetHand
+        if (moveable == true){
+          hand.moveHands( targetHandNumber, pseudoStack );
+          cout << "\nHands moveds";
+        }
+
+        // use popAmount here
+        hand.popCards( handNumber, popAmount );
+        pseudoStack.clear();
+
         break;
-      // 3: To select one of the hand cards
-      case 3 : cout << "3 was selected";
+      // 4: to quit
+      case 4 :
         break;
-      // 4: To reset the game
-      case 4 : cout << "4 was selected";
-        break;
-      // 5: to quit
-      case 5 : cout << "5 was selected";
-        break;
+
+
     }
-  }while(selection != 5);
+
+    // if all piles == 13 , selection = 4, You win Message!
+    // selection = targetPile.gameOver();
+  }while(selection != 4);
 
   // Exit Message
   cout << "\nThanks for playing!";
-  cout << endl;
+  system("clear");
 } // End main
 
 
@@ -108,7 +188,7 @@ int main()
   // Deck Order: foreach cards as card (sorta)
   for( int card : solitaire.getCards() )
     cout << "\ncard: " << card;
-
+deque<int> getHand7();
   // Draw Pile
   cout << "\ndrawPile.size " << drawPile.getCards().size();
 

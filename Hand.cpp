@@ -1,6 +1,6 @@
 #include "Hand.h"
 
-Hand::Hand(vector<int> visitingCards)
+void Hand::fillHand(vector<int> visitingCards)
 {
   // refactor
   // hand1{24}, hand2{25,26}, hand3{27, 28, 29}, hand4{30, 31, 32, 33},
@@ -76,4 +76,208 @@ deque<int> Hand::getHand6()
 deque<int> Hand::getHand7()
 {
   return hand7;
+}
+
+void Hand::moveCards( int handNumber )
+{
+
+  cout << "\nplaceholder";
+
+}
+
+// checks hand given for amount of possible cards to move
+vector<int> Hand::checkHand(int handNumber)
+{
+
+
+
+  vector < deque<int> > hands = getHands();
+  vector<int> pseudoStack;
+
+  if (hands.at(handNumber - 1).size() == 0)
+    return pseudoStack;
+
+
+
+  cout << "\nhandNumber-1: " << handNumber-1;
+  cout << "\nhands[handNumber-1].size()" << hands[handNumber-1].size();
+  cout << "\nhands[handNumber-1].back() is: " << hands[handNumber-1].back();
+
+  //creates a temporary vector that will adhere to the rules of moving hands in solitaire
+
+  // puts last element in hands vector into pseudostack
+  pseudoStack.push_back( hands[handNumber-1].back() );
+  for (int i = hands[handNumber-1].size() - 1; i >= 0; i--) {
+    if ( getFace( pseudoStack.front() ) == getFace( hands[handNumber-1][i] - 1 ) )
+      pseudoStack.push_back(hands[handNumber-1].back());
+
+    cout << "\ni= " << i;
+    cout << "\nhands[handNumber-1][i]: " << hands[handNumber-1][i]
+         << " getFace(hands[handNumber-1][i]): " << getFace(hands[handNumber-1][i]);
+
+  }
+
+  cout << "\nYou can move these cards to another hand: ";
+  for( int i = 0; i < pseudoStack.size(); i++ ){
+    checkFace( getFace( pseudoStack.at(i) ) );
+    cout << getSuit( pseudoStack.at(i) );
+  }
+
+
+
+  return pseudoStack;
+
+}
+
+vector<int> Hand::selectCards( vector<int> pseudoStack )
+{
+
+  int selectedCards;
+  int answer;
+  vector<int> tempStack;
+
+  do {
+
+    cout << "\n\nHow many cards would you like to select, out of " << pseudoStack.size()
+         << "? \nThe cards will be chosen in the order they appear." << endl;
+    for( int i = 0; i < pseudoStack.size(); i++ ){
+      checkFace( getFace( pseudoStack.at(i) ) );
+      cout << getSuit( pseudoStack.at(i) );
+    }
+
+    cout << endl;
+    cin >> selectedCards;
+    while (selectedCards > pseudoStack.size() || selectedCards < 1){
+      cout << "\nYou have selected an improper amount of cards, please be sure you select an amount between 1 and "
+           << pseudoStack.size() << endl;
+       cin >> selectedCards;
+    }
+
+    cout << "\nYou have selected these cards ";
+
+    for (int i = 0; i < selectedCards;i++ )
+      cout << pseudoStack.at(i) << " ";
+
+    cout << "\nIs this correct? 1 for yes, 0 for no" << endl;
+     cin >> answer;
+ }while( answer == 0 );
+
+ for (int i = 0; i < selectedCards;i++ )
+   tempStack.push_back( pseudoStack.at(i) );
+
+  pseudoStack = tempStack;
+
+  return pseudoStack;
+
+}
+
+bool Hand::checkTargetHand( int targetHandNumber, vector<int> pseudoStack )
+{
+
+  int bottomCard;
+  bool move = false;
+
+  cout << "\ntargetHandNumber " << targetHandNumber;
+  for (int i = 0; i < pseudoStack.size();i++)
+    cout << "\npseudoStack " << pseudoStack.at(i);
+
+  cout << "\nhand"<< targetHandNumber <<".back()" << getFace( getHand( targetHandNumber ).back() );
+  bottomCard = getFace( getHand( targetHandNumber ).back() );
+
+
+  if(bottomCard == 0 && getFace( pseudoStack.back() == 13)){
+    cout << "\nTargetHand is empty, moving kings ontop! ";
+    move = true;
+
+  } else if (bottomCard == 0 && getFace( pseudoStack.back() != 13)){
+      cout << "\nYou cannot move a card that is not a king to an empty pile";
+
+  } else if(bottomCard == getFace( pseudoStack.back() ) + 1){
+    cout << "\nPseudoStack will fit ontop of targetpile";
+    move = true;
+
+  } else
+    cout << "\nCannot place PseudoStack ontop of targetpile"
+         << "\nbottomCard: " << bottomCard << " pseudoStack.back(): " << getFace( pseudoStack.back() );
+
+  cout << endl;
+
+  return move;
+
+}
+
+void Hand::moveHands( int targetHandNumber, vector<int> pseudoStack)
+{
+
+  for(int i = 0;i < pseudoStack.size();i++)
+    getHand(targetHandNumber).push_back( pseudoStack.at(i) );
+
+}
+
+deque <int> Hand::getHand( int handNumber)
+{
+
+  switch( handNumber )
+  {
+
+    case 1:
+    return hand1;
+    break;
+
+    case 2:
+    return hand2;
+    break;
+
+    case 3:
+    return hand3;
+    break;
+
+    case 4:
+    return hand4;
+    break;
+
+    case 5:
+    return hand5;
+    break;
+
+    case 6:
+    return hand6;
+    break;
+
+    case 7:
+    return hand7;
+    break;
+
+    default: cout << "\nNo hand returned!?!";
+    exit(0);
+    break;
+  }
+
+}
+
+void Hand::popCards( int handNumber, int popAmount)
+{
+
+  for (int i = 0; i < popAmount; i++)
+    getHand( handNumber ).pop_back();
+
+}
+
+vector< deque<int> > Hand::getHands()
+{
+
+  vector< deque<int> > hands;  //vector of type deque<int>
+
+  hands.clear();
+
+  hands.push_back( getHand1() );
+  hands.push_back( getHand2() );
+  hands.push_back( getHand3() );
+  hands.push_back( getHand4() );
+  hands.push_back( getHand5() );
+  hands.push_back( getHand6() );
+  hands.push_back( getHand7() );
+
+  return hands;
+
 }

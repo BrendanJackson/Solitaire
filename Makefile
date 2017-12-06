@@ -3,8 +3,8 @@
 # *****************************************************
 # Variables to control Makefile operation
 
-CXX = g++
-CXXFLAGS = -Wall -g
+#CXX = g++
+#CXXFLAGS = -Wall -g
 
 # ****************************************************
 # Compiles all of the .cpp files, joins them with Pile.h, and executes the program

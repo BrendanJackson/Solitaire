@@ -14,11 +14,12 @@
 /*=Pile
 ******************/
 // Creates 52 shuffled cards, 1-13 == "♠️", 14-26 == "♣️", 27-39 == "♦️", 40-52 == "♥️"
-Pile::Pile()
+void Pile::createDeck()
 {
-  // !TODO Change method and add call
+
   for(int i = 1;i <= 52; i++)
     cards.push_back(i);
+
 
   // shuffleDeck();
 
@@ -26,6 +27,7 @@ Pile::Pile()
 
 void Pile::shuffleDeck()
 {
+
   mt19937 mt;
   // Creates a time object
   auto current_time = chrono::system_clock::now();
@@ -37,8 +39,10 @@ void Pile::shuffleDeck()
   // Seed for random, prevents program from using the same # continuously
   mt.seed( millis );
 
+
   // shuffles deck
   shuffle( begin( cards ), end( cards ), mt);
+
 }
 
 
@@ -70,8 +74,7 @@ int Pile::displayGameMenu()
        << "\n1: To Draw a card"
        << "\n2: To move the draw card"
        << "\n3: To select one of the hand cards"
-       << "\n4: To reset the game"
-       << "\n5: to quit"
+       << "\n4: to quit"
        << endl;
 
   cin >> menuSelection;
@@ -107,7 +110,52 @@ void Pile::displayHandMenu()
        << "\n 5: Hand5"
        << "\n 6: Hand6"
        << "\n 7: Hand7"
-       << "\n 8: Draw another card"
+       << "\n 8: Go back to the main menu"
        << endl;
 
+}
+
+int Pile::getFace(int number)
+{
+  number = number % 13;
+  if (number == 0)
+    number = 13;
+
+  return number;
+}
+
+void Pile::checkFace(int number)
+{
+
+  if (number > 1 && number < 11)
+    cout << number;
+  else if( number == 1)
+    cout << "A";
+  else if( number == 11)
+    cout << "J";
+  else if( number == 12)
+   cout << "Q";
+  else if( number == 13)
+   cout << "K";
+  else
+    cout << "ERROR";
+
+}
+
+string Pile::getSuit(int number)
+{
+
+  string suit;
+  if (number <= 13)
+    suit = "♠️";
+  else if (number >= 14 && number <= 26)
+    suit = "♣️";
+  else if (number >= 27 && number <= 39)
+    suit = "♦️";
+  else if (number >= 40 && number <= 52)
+    suit = "♥️";
+  else
+    suit = "ERROR";
+
+    return suit;
 }

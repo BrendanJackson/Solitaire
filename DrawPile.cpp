@@ -13,63 +13,21 @@ queue<int> DrawPile::getCards()
   return cards;
 }
 
+void DrawPile::popCard()
+{
+  cards.pop();
+}
+
 void DrawPile::drawCard()
 {
 
-  cout << "\ncards.front(): " << cards.front() << " cards.back(): " << cards.back()
-       << " Pushing front card to back";
+  // puts the front card in the back of the queue
   cards.push( cards.front() );
-  cout << "\ncards.back(): " << cards.back() << " Popping front card off the list!";
-
+  // removes the front card
   cards.pop();
-  cout << "\ncards.front(): " << cards.front() << " cards.back(): " << cards.back();
 
 }
 
-int DrawPile::getCardValue( Hand handObject, int handNumber )
-{
-// !TODO: duplication needs removed
-  deque<int> handChoice;
-
-  switch (handNumber){
-
-    case 1:
-      handChoice = handObject.getHand1();
-      break;
-
-    case 2:
-      handChoice = handObject.getHand2();
-      break;
-
-    case 3:
-      handChoice = handObject.getHand3();
-      break;
-
-    case 4:
-      handChoice = handObject.getHand4();
-      break;
-
-    case 5:
-      handChoice = handObject.getHand5();
-      break;
-
-    case 6:
-      handChoice = handObject.getHand6();
-      break;
-
-    case 7:
-      handChoice = handObject.getHand7();
-      break;
-  }
-
-  // !TODO: terrible name
-  int number = handChoice.front() % 13;
-  if (number == 0)
-    number = 13;
-
-  return number;
-
-}
 
 deque<int> DrawPile::getHand( Hand handObject, int handNumber )
 {

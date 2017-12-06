@@ -16,7 +16,7 @@
 #define HAND_H
 
 #include "Pile.h"
-
+// #include "TargetPile.h"
 
 class Hand : public Pile
 {
@@ -29,15 +29,8 @@ protected:
   deque<int> hand6;
   deque<int> hand7;
 
-  int hand2Visibility = 1; //last
-  int hand3Visibility = 2; //last 2
-  int hand4Visibility = 3; //last 3
-  int hand5Visibility = 4; //last 4
-  int hand6Visibility = 5; //last 5
-  int hand7Visibility = 6; //last 6
-
 public:
-  Hand(vector<int> visitingCards);
+  void fillHand(vector<int> visitingCards);
 
   // getters
   deque<int> getHand1();
@@ -47,6 +40,19 @@ public:
   deque<int> getHand5();
   deque<int> getHand6();
   deque<int> getHand7();
+
+
+  // moves cards
+  void moveCards( int handNumber );
+
+  vector<int> checkHand( int handNumber );
+  vector<int> selectCards( vector<int> pseudoStack );
+  bool checkTargetHand( int targetHandNumber, vector<int> pseudoStack );
+  void moveHands( int targetHandNumber, vector<int> pseudoStack);
+  void popCards( int handNumber, int popAmount); // removes cards that have been successfully passed
+
+  deque <int> getHand( int handNumber);
+  vector< deque<int> > getHands();
 };
 
 #endif

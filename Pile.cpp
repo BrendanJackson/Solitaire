@@ -21,7 +21,7 @@ void Pile::createDeck()
     cards.push_back(i);
 
 
-  // shuffleDeck();
+  shuffleDeck();
 
 }
 
@@ -156,7 +156,7 @@ void Pile::checkFace(int number)
   else if( number == 13)
    cout << "K";
   else
-    cout << "ERROR";
+    cout << "?";
 
 }
 

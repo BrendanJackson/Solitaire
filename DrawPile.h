@@ -1,9 +1,9 @@
 /*
 |--------------------------------------------------------------------------
-|
+| DrawPile
 |--------------------------------------------------------------------------
-|
-|
+| Cycles draw cards through
+| sends draw cards to various parts of the game
 |
 |
 |
@@ -14,7 +14,7 @@
 
 
 
-
+// prevents duplication
 #ifndef DRAWPILE_H
 #define DRAWPILE_H
 
@@ -24,18 +24,19 @@
 class DrawPile : public Pile
 {
 protected:
-  queue<int> cards;
-public:
-  DrawPile( vector<int> visitingCards );
-  void drawCard();
+  queue<int> cards; //gets an initial 24 cards
 
-  deque<int> getHand( Hand handObject, int handNumber );
-  void moveCard( deque<int> hand );
+public:
+  DrawPile( vector<int> visitingCards ); // sets initial 24 cards
+  void drawCard(); // shifts cards from front to back
+
+  deque<int> getHand( Hand handObject, int handNumber ); // gets hand number from hand object
+  void moveCard( deque<int> hand ); // moves a card to a new hand, removes card from drawpile
 
   // getters
   queue<int> & getCards();
 
-  void popCard();
+  void popCard(); // pops card off cards queue
 };
 
 #endif

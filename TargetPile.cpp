@@ -229,8 +229,11 @@ void TargetPile::displayHand( vector< deque<int> > hands )
   {
     for ( size_t j = 0; j < hands.size(); j++ )
     {
-        if ( ( hands[i].size() == hidden[i].size() ) && ( hidden[i].size() != 1 ) )
+        if ( ( hands[i].size() == hidden[i].size() ) && ( hidden[i].size() != 1 ) ){
           hidden[i].pop_back();
+          cout << i << "size: "<< hidden[i].size();
+        }
+
 
         // cout << "\nhands[i].size(): " << hands[i].size()
         //      << " hidden[i].size(): " << hidden[i].size();
@@ -242,7 +245,7 @@ void TargetPile::displayHand( vector< deque<int> > hands )
 
 
         cout << setw( 8 );
-        hidden[i][j];
+
         if( hidden[j][i] == 1 ) // hidden[][] == true{ cout ???}
         {
           cout << setw(8) << fixed << right << "???";
@@ -286,22 +289,22 @@ stack <int> TargetPile::getHearts()
   return hearts;
 }
 
-int TargetPile::gameOver()
-{
-
-  if (
-    (spades.top() == 13)
-    && (clubs.top() == 26)
-    && (diamonds.top() == 39)
-    && (hearts.top() == 52)
-  ){
-    return 4;
-  } else {
-    return 0;
-  }
-
-
-}
+// int TargetPile::gameOver()
+// {
+//
+//   if (
+//     (spades.top() == 13)
+//     && (clubs.top() == 26)
+//     && (diamonds.top() == 39)
+//     && (hearts.top() == 52)
+//   ){
+//     return 4;
+//   } else {
+//     return 0;
+//   }
+//
+//
+// }
 
 
 vector < vector <bool> > & TargetPile::getHidden()

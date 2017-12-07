@@ -25,10 +25,9 @@ int main()
   vector<int> pseudoStack;
   deque<int> currentHand;
 
-
-  // Initial game setup.
-  // !TODO: Set constructors as virtual, there are 3 instances of the game running
-
+  /**
+  * Initial game setup.
+  */
   Pile solitaire;
   solitaire.createDeck();
   DrawPile drawPile( solitaire.getCards() );
@@ -42,9 +41,10 @@ int main()
 
   // I want to loop back until the user selection is equal to 5
   do{
+    targetPile.getHidden();
+    // Start the game
     targetPile.displayGame(drawPile);
     targetPile.displayHand( hand.getHands() );
-    // Start the game
     selection = solitaire.bootstrap();
 
 
@@ -190,7 +190,7 @@ int main()
 
         // Start TargetPile migration
         if(targetHandNumber == 0){
-          cout << "\nTargetHand is 0, should break?";
+
 
           if(popAmount > 1){
             cout << "\ncannot move more than 1 card at a time to the target pile";
@@ -241,36 +241,3 @@ int main()
   cout << "\nThanks for playing!";
   system("clear");
 } // End main
-
-
-/*
-  // Deck Order: foreach cards as card (sorta)
-  for( int card : solitaire.getCards() )
-    cout << "\ncard: " << card;
-deque<int> getHand7();
-  // Draw Pile
-  cout << "\ndrawPile.size " << drawPile.getCards().size();
-
-  // Hand Piles
-  cout << "\nhand1.size " << hand.getHand1().size();
-  cout << "\nhand2.size " << hand.getHand2().size();
-  cout << "\nhand3.size " << hand.getHand3().size();
-  cout << "\nhand4.size " << hand.getHand4().size();
-  cout << "\nhand5.size " << hand.getHand5().size();
-  cout << "\nhand6.size " << hand.getHand6().size();
-  cout << "\nhand7.size " << hand.getHand7().size();
-*/
-
-/*
-cout << "\nDeque Test";
-cout << "\nhand.getHand1().size(): " << hand.getHand7().size();
-cout << "\nindex 0: " << hand.getHand7()[hand.getHand7().size() - hand.getHand7().size()];
-cout << "\nindex 1: " << hand.getHand7()[hand.getHand7().size() - hand.getHand7().size() + 1];
-cout << "\nindex 2: " << hand.getHand7()[hand.getHand7().size() - hand.getHand7().size() + 2];
-cout << "\nindex 3: " << hand.getHand7()[hand.getHand7().size() - hand.getHand7().size() + 3];
-cout << "\nindex 4: " << hand.getHand7()[hand.getHand7().size() - hand.getHand7().size() + 4];
-cout << "\nindex 5: " << hand.getHand7()[hand.getHand7().size() - hand.getHand7().size() + 5];
-cout << "\nindex 6: " << hand.getHand7()[hand.getHand7().size() - hand.getHand7().size() + 6];
-cout << endl;
-exit(0);
-*/

@@ -62,6 +62,8 @@ public:
   stack <int> getDiamonds();
   stack <int> getHearts();
 
+  void displayStacks();
+
   int gameOver();
 };
 

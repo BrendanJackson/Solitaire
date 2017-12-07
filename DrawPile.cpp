@@ -8,7 +8,7 @@ DrawPile::DrawPile(vector<int> visitingCards)
 
 }
 
-queue<int> DrawPile::getCards()
+queue<int> & DrawPile::getCards()
 {
   return cards;
 }

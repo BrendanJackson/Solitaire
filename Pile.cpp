@@ -99,10 +99,28 @@ void Pile::displayDrawMenu()
        << endl;
 
 }
+
 void Pile::displayHandMenu()
 {
 
   cout << "\nWhich hand would you like to select?"
+       << "\n 1: Hand1"
+       << "\n 2: Hand2"
+       << "\n 3: Hand3"
+       << "\n 4: Hand4"
+       << "\n 5: Hand5"
+       << "\n 6: Hand6"
+       << "\n 7: Hand7"
+       << "\n 8: Go back to the main menu"
+       << endl;
+
+}
+
+void Pile::displayTargetHandMenu()
+{
+
+  cout << "\nWhich hand would you like to select?"
+       << "\n 0: Target Pile"
        << "\n 1: Hand1"
        << "\n 2: Hand2"
        << "\n 3: Hand3"

@@ -43,15 +43,15 @@ public:
 
 
   // moves cards
-  void moveCards( int handNumber );
+  // void moveCards( int handNumber );
 
   vector<int> checkHand( int handNumber );
   vector<int> selectCards( vector<int> pseudoStack );
-  bool checkTargetHand( int targetHandNumber, vector<int> pseudoStack );
+  bool checkTargetHand( deque<int> currentHand, vector<int> pseudoStack );
   void moveHands( int targetHandNumber, vector<int> pseudoStack);
   void popCards( int handNumber, int popAmount); // removes cards that have been successfully passed
 
-  deque <int> getHand( int handNumber);
+  deque<int> & getHand( int handNumber);
   vector< deque<int> > getHands();
 };
 

@@ -19,7 +19,12 @@ int main()
   system("clear");
   // main loop control variable
   int selection;
+  int drawCard;
+  int targetHand;
+
   vector<int> pseudoStack;
+  deque<int> currentHand;
+
 
   // Initial game setup.
   // !TODO: Set constructors as virtual, there are 3 instances of the game running
@@ -51,8 +56,9 @@ int main()
       case 2 :
         solitaire.displayDrawMenu();
 
-        int targetHand;
+
         cin >> targetHand;
+
 
         // sends you back to the menu
         if (targetHand == 8)
@@ -65,8 +71,10 @@ int main()
         }
 
         // cout << "\nDraw card is: " << drawPile.getFace( drawPile.getCards().front() );
-        int drawCard;
-        drawCard = drawPile.getFace( drawPile.getCards().front() );
+
+        drawCard = drawPile.getCards().front(); //
+        cout << "\ndrawCard set as " << drawCard;
+
 
         // sends draw card to targetPiles
         if(targetHand == 0){
@@ -80,8 +88,24 @@ int main()
           break;
         }
 
-        hand.getHands().clear();
-        hand.getHands()[targetHand-1].push_front( drawCard );
+
+
+        // supposed to push a the drawCard to the targetHand
+        if( ( hand.getHand( targetHand ).empty() ) && ( drawPile.getFace( drawCard ) == 13 ) ){
+          hand.getHand( targetHand ).push_back( drawCard );
+          drawPile.getCards().pop();
+
+        } else if( ( hand.getHand( targetHand ).empty() ) && ( drawPile.getFace( drawCard ) != 13 ) ){
+          cout << "\nYou cannot place a card that is not a king on an empty hand";
+
+        } else if( hand.getFace( hand.getHand( targetHand ).back() ) == hand.getFace( drawCard ) + 1 ){
+          hand.getHand( targetHand ).push_back( drawCard );
+          drawPile.getCards().pop();
+
+        } else
+          cout << "\nYour Card Can only go ontop of card 1 higher than its value";
+
+
         break;
 
       // 3: To select one of the hand cards
@@ -123,19 +147,19 @@ int main()
 
         targetPile.displayHand( hand.getHands() );
 
-        cout << "\nWhich hand would you like to move your selected card(s) to?";
+        cout << "\nYou need to choose a hand for your cards to be sent to.";
         // Get Target Hand
-        hand.displayHandMenu();
+        hand.displayTargetHandMenu();
 
         cin >> targetHandNumber;
 
         // initial validation
         while (
-          (targetHandNumber < 1 || targetHandNumber > 8)
+          (targetHandNumber < 0 || targetHandNumber > 8)
           || (targetHandNumber == handNumber)
         ){
 
-          if (targetHandNumber < 1 || targetHandNumber > 8){
+          if (targetHandNumber < 0 || targetHandNumber > 8){
             cout << "\ninvalid input, enter a number 1-8.\n";
             hand.displayHandMenu();
             cin >> targetHandNumber;
@@ -150,11 +174,76 @@ int main()
         }
 
         // sends  card to targetPiles
-        if( targetHandNumber == 8 )
+        if( targetHandNumber == 8 ){
+          cout << "\nTargetHand is 8, breaking";
           break;
-        // End Get Target Hand
+        }
 
-        moveable = hand.checkTargetHand( targetHandNumber, pseudoStack );
+
+        // Start TargetPile migration
+        if(targetHandNumber == 0){
+          cout << "\nTargetHand is 0, should break?";
+
+          if(popAmount > 1){
+            cout << "\ncannot move more than 1 card at a time to the target pile";
+            break;
+          }
+
+
+          bool pop = false;
+          pop = targetPile.moveToTarget( pseudoStack.back() );
+
+          if (pop == true){
+            cout << "\npop is true!Heres the break!";
+            hand.popCards( handNumber, popAmount);
+          }
+          cout << "\nHeres the break!";
+          break;
+        } // End TargetPile migration
+
+
+        currentHand = hand.getHand( targetHandNumber );
+
+        // !TODO:start moveable
+        int bottomCard;
+        bool move;
+        move = false;
+
+
+        //
+        // cout << "\ncurrentHand.back(): " << currentHand.back();
+        //
+        // cout << "\ngetFace( currentHand.back() ): " << hand.getFace( currentHand.back() );
+
+
+        // cout << "\nhand"<< targetHandNumber <<".back()" << getFace( getHand( targetHandNumber ).back() );
+        if (currentHand.empty() == 1)
+          bottomCard = 0;
+        else
+          bottomCard = hand.getFace( currentHand.back() );
+
+
+        if( (bottomCard == 0) && ( hand.getFace( pseudoStack.back() == 13) ) ){
+          cout << "\nTargetHand is empty, moving kings ontop! ";
+          move = true;
+
+        } else if (bottomCard == 0 && hand.getFace( pseudoStack.back() != 13)){
+            cout << "\nYou cannot move a card that is not a king to an empty pile";
+
+        } else if(bottomCard == hand.getFace( pseudoStack.back() ) + 1){
+          cout << "\nPseudoStack will fit ontop of targetpile";
+          move = true;
+
+        } else
+          cout << "\nCannot place PseudoStack ontop of targetpile"
+               << "\nbottomCard: " << bottomCard << " pseudoStack.back(): " << hand.getFace( pseudoStack.back() );
+
+        cout << endl;
+
+        moveable = move;
+
+        // !TODO:end moveable
+        // moveable = hand.checkTargetHand( currentHand, pseudoStack );
 
         // moves pseudoStack ontop of TargetHand
         if (moveable == true){

@@ -1,5 +1,87 @@
 #include "TargetPile.h"
 
+void TargetPile::displayStacks()
+{
+  // stack 1,2,3,4
+  // spades
+  if(spades.size() != 0 ){
+
+    if (spades.top() > 1 && spades.top() < 11)
+      cout  << " |   "<<spades.top()<<"   | " ;
+    else if( spades.top() == 1)
+      cout  << " |   A   | " ;
+    else if( spades.top() == 11)
+      cout  << " |   J   | " ;
+    else if( spades.top() == 12)
+      cout  << " |   Q   | " ;
+    else if( spades.top() == 13)
+      cout  << " |   K   | " ;
+    else
+      cout << " ERROR ";
+  } else
+    cout  << " |   ?   | " ;
+
+  // clubs
+  if(clubs.size() != 0 ){
+
+    if (clubs.top() >= 15 && clubs.top() <= 23)
+      cout  << " |   "<<clubs.top()<<"   |"  ;
+    else if( clubs.top() == 14)
+      cout  << " |   A   | " ;
+    else if( clubs.top() == 24)
+      cout  << " |   J   | " ;
+    else if( clubs.top() == 25)
+      cout  << " |   Q   | " ;
+    else if( clubs.top() == 26)
+      cout  << " |   K   | " ;
+    else
+      cout << " ERROR ";
+
+  } else
+    cout  << " |   ?   | " ;
+
+  // diamonds
+  if(diamonds.size() != 0 ){
+
+    if (diamonds.top() >= 28 && diamonds.top() <= 36)
+      cout  << " |   "<<diamonds.top()<<"    |" ;
+    else if( diamonds.top() == 27)
+      cout  << " |   A   | " ;
+    else if( diamonds.top() == 37)
+      cout  << " |   J   | " ;
+    else if( diamonds.top() == 38)
+      cout  << " |   Q   | " ;
+    else if( diamonds.top() == 39)
+      cout  << " |   K   | " ;
+    else
+        cout << " ERROR ";
+
+  } else
+    cout  << " |   ?   | " ;
+
+    // hearts
+    if(hearts.size() != 0 ){
+
+      if (hearts.top() >= 41 && hearts.top() <= 48 )
+        cout  << " |   "<<hearts.top()<<"   | " ;
+      else if( hearts.top() == 40)
+        cout  << " |   A   | " ;
+      else if( hearts.top() == 50)
+        cout  << " |   J   | " ;
+      else if( hearts.top() == 51)
+        cout  << " |   Q   | " ;
+      else if( hearts.top() == 52)
+        cout  << " |   K   | " ;
+      else
+        cout << " ERROR ";
+
+    } else
+      cout  << " |   ?   | " ;
+
+   cout << endl;
+
+}
+
 bool TargetPile::moveToTarget(int card)
 {
   cout << "\nMoving to target pile";
@@ -27,10 +109,10 @@ bool TargetPile::moveToTarget(int card)
   } else if (card >= 14 && card <= 26){
 
     // Makes Ace the 1st card in the stack always
-    if( clubs.empty() && card == 1){
+    if( clubs.empty() && card == 14){
         clubs.push(card);
         pop = true;
-    } else if ( clubs.empty() && card != 1 )
+    } else if ( clubs.empty() && card != 14 )
       cout << "\nThe first card must be an Ace";
     // Makes All cards after the Ace has been entered follow face
     else if ( clubs.top() == card - 1){
@@ -43,10 +125,10 @@ bool TargetPile::moveToTarget(int card)
   } else if (card >= 27 && card <= 39){
 
     // Makes Ace the 1st card in the stack always
-    if( diamonds.empty() && card == 1){
+    if( diamonds.empty() && card == 27){
         diamonds.push(card);
         pop = true;
-    } else if ( diamonds.empty() && card != 1 )
+    } else if ( diamonds.empty() && card != 27 )
       cout << "\nThe first card must be an Ace";
     // Makes All cards after the Ace has been entered follow face
     else if ( diamonds.top() == card - 1){
@@ -59,11 +141,11 @@ bool TargetPile::moveToTarget(int card)
   } else if (card >= 40 && card <= 52){
 
     // Makes Ace the 1st card in the stack always
-    if( hearts.empty() && card == 1){
+    if( hearts.empty() && card == 40){
       hearts.push(card);
       pop = true;
 
-    } else if ( hearts.empty() && card != 1 )
+    } else if ( hearts.empty() && card != 40 )
       cout << "\nThe first card must be an Ace";
     // Makes All cards after the Ace has been entered follow face
     else if ( hearts.top() == card - 1){
@@ -91,7 +173,7 @@ void TargetPile::displayGame( DrawPile drawPile )
 
   s = getSuit( drawPile.getCards().front() );
   n = getFace( drawPile.getCards().front() );
-  checkFace(n);
+  // checkFace(n);
   cout << endl;
   cout << " | Draw1 | | Draw2 |            " << " |   ♠️  | " <<  " |   ♣️  | " <<  " |   ♦️  | " <<  " |   ♥️  | " << endl;
   cout << " +-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl;
@@ -104,69 +186,8 @@ void TargetPile::displayGame( DrawPile drawPile )
 
 // space
 cout << "            " ;
-// stack 1,2,3,4
-// spades
-if(spades.size() != 0 ){
-  if (spades.top() > 1 && spades.top() < 11)
-    cout  << " |   "<<spades.top()<<"   | " ;
-  else if( spades.top() == 1)
-    cout  << " |   A   | " ;
-  else if( spades.top() == 11)
-    cout  << " |   J   | " ;
-  else if( spades.top() == 12)
-    cout  << " |   Q   | " ;
-  else
-    cout  << " |   K   | " ;
-} else
-  cout  << " |   ?   | " ;
 
-// clubs
-if(clubs.size() != 0 ){
-  if (clubs.top() > 1 && clubs.top() < 11)
-    cout  << " |   "<<clubs.top()<<"   |"  ;
-  else if( clubs.top() == 1)
-    cout  << " |   A   | " ;
-  else if( clubs.top() == 11)
-    cout  << " |   J   | " ;
-  else if( clubs.top() == 12)
-    cout  << " |   Q   | " ;
-  else
-    cout  << " |   K   | " ;
-} else
-  cout  << " |   ?   | " ;
-
-// diamonds
-if(diamonds.size() != 0 ){
-  if (diamonds.top() > 1 && diamonds.top() < 11)
-    cout  << " |   "<<diamonds.top()<<"    |" ;
-  else if( diamonds.top() == 1)
-    cout  << " |   A   | " ;
-  else if( diamonds.top() == 11)
-    cout  << " |   J   | " ;
-  else if( diamonds.top() == 12)
-    cout  << " |   Q   | " ;
-  else
-    cout  << " |   K   | " ;
-} else
-  cout  << " |   ?   | " ;
-
-  // hearts
-  if(hearts.size() != 0 ){
-    if (hearts.top() > 1 && hearts.top() < 11)
-      cout  << " |   "<<hearts.top()<<"   | " ;
-    else if( hearts.top() == 1)
-      cout  << " |   A   | " ;
-    else if( hearts.top() == 11)
-      cout  << " |   J   | " ;
-    else if( hearts.top() == 12)
-      cout  << " |   Q   | " ;
-    else
-      cout  << " |   K   | " ;
-  } else
-    cout  << " |   ?   | " ;
-
- cout << endl;
-
+displayStacks();
 // suit
   cout << " |   ?   | |   "<<s<<"  |            " << " |   ♠️  | " <<  " |   ♣️  | " <<  " |   ♦️  | " <<  " |   ♥️  | " << endl;
 
@@ -178,70 +199,9 @@ if(diamonds.size() != 0 ){
   // Card Values
   // space
   cout << "            " ;
-  // stack 1,2,3,4
-  // spades
-  if(spades.size() != 0 ){
-    if (spades.top() > 1 && spades.top() < 11)
-      cout  << " |   "<<spades.top()<<"   | " ;
-    else if( spades.top() == 1)
-      cout  << " |   A   | " ;
-    else if( spades.top() == 11)
-      cout  << " |   J   | " ;
-    else if( spades.top() == 12)
-      cout  << " |   Q   | " ;
-    else
-      cout  << " |   K   | " ;
-  } else
-    cout  << " |   ?   | " ;
 
-  // clubs
-  if(clubs.size() != 0 ){
-    if (clubs.top() > 1 && clubs.top() < 11)
-      cout  << " |   "<<clubs.top()<<"   |"  ;
-    else if( clubs.top() == 1)
-      cout  << " |   A   | " ;
-    else if( clubs.top() == 11)
-      cout  << " |   J   | " ;
-    else if( clubs.top() == 12)
-      cout  << " |   Q   | " ;
-    else
-      cout  << " |   K   | " ;
-  } else
-    cout  << " |   ?   | " ;
+  displayStacks();
 
-  // diamonds
-  if(diamonds.size() != 0 ){
-    if (diamonds.top() > 1 && diamonds.top() < 11)
-      cout  << " |   "<<diamonds.top()<<"    |" ;
-    else if( diamonds.top() == 1)
-      cout  << " |   A   | " ;
-    else if( diamonds.top() == 11)
-      cout  << " |   J   | " ;
-    else if( diamonds.top() == 12)
-      cout  << " |   Q   | " ;
-    else
-      cout  << " |   K   | " ;
-  } else
-    cout  << " |   ?   | " ;
-
-    // hearts
-    if(hearts.size() != 0 ){
-      if (hearts.top() > 1 && hearts.top() < 11)
-        cout  << " |   "<<hearts.top()<<"   | " ;
-      else if( hearts.top() == 1)
-        cout  << " |   A   | " ;
-      else if( hearts.top() == 11)
-        cout  << " |   J   | " ;
-      else if( hearts.top() == 12)
-        cout  << " |   Q   | " ;
-      else
-        cout  << " |   K   | " ;
-    } else
-      cout  << " |   ?   | " ;
-
-  // End Card Values
-
-  cout << endl;
   cout     << " +-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl << endl;
 
 
@@ -258,14 +218,7 @@ void TargetPile::displayHand( vector< deque<int> > hands )
 
 
 
-  int maxSize = 0;
   cout << endl;
-  // display hands in columns
-  for (int i = 0; i < hands.size(); i++) {
-    maxSize = hands[i].size();
-    cout << "["<<i<<"]Size:" << maxSize << "  ";
-
-  }
 
   size_t n = max_element( hands.begin(), hands.end(),
     [](  const deque<int> &x, const deque<int> &y )
@@ -325,9 +278,11 @@ int TargetPile::gameOver()
     && (clubs.top() == 26)
     && (diamonds.top() == 39)
     && (hearts.top() == 52)
-  )
+  ){
     return 4;
+  } else {
+    return 0;
+  }
 
-  return 0;
 
 }

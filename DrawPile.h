@@ -33,7 +33,7 @@ public:
   void moveCard( deque<int> hand );
 
   // getters
-  queue<int> getCards();
+  queue<int> & getCards();
 
   void popCard();
 };

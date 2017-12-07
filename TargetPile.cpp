@@ -205,20 +205,18 @@ displayStacks();
   cout     << " +-------+ +-------+            " << " +-------+ " <<  " +-------+ " <<  " +-------+ " <<  " +-------+ " << endl << endl;
 
 
-  // displayHand( hand.getHands() );
-
-
 }
 
 
 void TargetPile::displayHand( vector< deque<int> > hands )
 {
-  cout << " |   1   | |   2   |  |   3   |  |   4   |  |   5   |  |   6   |  |   7   | " << endl;
-  cout << " +-------+ +-------+  +-------+  +-------+  +-------+  +-------+  +-------+ " << endl;
-
-
-
+  cout << "    | 1 |   | 2 |   | 3 |   | 4 |   | 5 |   | 6 |   | 7 | " << endl;
+  cout << "    +---+   +---+   +---+   +---+   +---+   +---+   +---+ " << endl;
   cout << endl;
+
+  // check for hidden values
+  getHidden();
+
 
   size_t n = max_element( hands.begin(), hands.end(),
     [](  const deque<int> &x, const deque<int> &y )
@@ -226,13 +224,31 @@ void TargetPile::displayHand( vector< deque<int> > hands )
         return x.size() < y.size();
       }
   )->size();
-cout << endl;
+
   for ( size_t i = 0; i < n; i++)
   {
     for ( size_t j = 0; j < hands.size(); j++ )
     {
+        if ( ( hands[i].size() == hidden[i].size() ) && ( hidden[i].size() != 1 ) )
+          hidden[i].pop_back();
+
+        // cout << "\nhands[i].size(): " << hands[i].size()
+        //      << " hidden[i].size(): " << hidden[i].size();
+
+        if ( ( hands[i].size() == hidden[i].size() ) && ( hidden[i].size() == 1 ) ){
+          hidden[i][j] = 0;
+          // cout << "\nhidden remove hidden status, hidden[i][j]: " << hidden[i][j];
+        }
+
+
         cout << setw( 8 );
-        if ( i < hands[j].size() )
+        hidden[i][j];
+        if( hidden[j][i] == 1 ) // hidden[][] == true{ cout ???}
+        {
+          cout << setw(8) << fixed << right << "???";
+
+        }
+        else if ( i < hands[j].size() )
         {
           cout << setw(6) << fixed << right;
           checkFace(getFace(hands[j][i]));
@@ -284,5 +300,21 @@ int TargetPile::gameOver()
     return 0;
   }
 
+
+}
+
+
+vector < vector <bool> > & TargetPile::getHidden()
+{
+
+  hidden.push_back( hidden1 );
+  hidden.push_back( hidden2 );
+  hidden.push_back( hidden3 );
+  hidden.push_back( hidden4 );
+  hidden.push_back( hidden5 );
+  hidden.push_back( hidden6 );
+  hidden.push_back( hidden7 );
+
+  return hidden;
 
 }

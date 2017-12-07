@@ -39,15 +39,18 @@ protected:
   string heart = "♥️";
   stack<int> hearts;
 
-  bool hand2Visibility[1] = {1}; //last
-  bool hand3Visibility[2] = {1,1}; //last 2
-  bool hand4Visibility[3] = {1,1,1}; //last 3
-  bool hand5Visibility[4] = {1,1,1,1}; //last 4
-  bool hand6Visibility[5] = {1,1,1,1,1}; //last 5
-  bool hand7Visibility[6] = {1,1,1,1,1,1}; //last 6
+  vector <bool> hidden1 = {0}; //last
+  vector <bool> hidden2 = {1}; //last
+  vector <bool> hidden3 = {1,1}; //last 2
+  vector <bool> hidden4 = {1,1,1}; //last 3
+  vector <bool> hidden5 = {1,1,1,1}; //last 4
+  vector <bool> hidden6 = {1,1,1,1,1}; //last 5
+  vector <bool> hidden7 = {1,1,1,1,1,1}; //last 6
+
+  vector < vector <bool> > hidden;
 
 public:
-  // TargetPile();
+
   void displayGame( DrawPile drawPile );
 
   void displayHand( vector< deque<int> > hands );
@@ -56,6 +59,7 @@ public:
 
   string getCardValue(int cardNumber);
 
+  vector < vector <bool> > & getHidden();
 
   stack <int> getSpades();
   stack <int> getClubs();

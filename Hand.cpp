@@ -226,6 +226,8 @@ vector<int> Hand::selectCards( vector<int> pseudoStack )
      cin >> answer;
  }while( answer == 0 );
 
+reverse( pseudoStack.begin(), pseudoStack.end() );
+
  for (int i = 0; i < selectedCards;i++ )
    tempStack.push_back( pseudoStack.at(i) );
 
@@ -239,27 +241,29 @@ bool Hand::checkTargetHand( deque<int> currentHand, vector<int> pseudoStack )
 {
 
   int bottomCard;
-  bool move = false;
-  cout << "\n***************\nEntered CheckTargetHand, no fault yet\n*******************\n";
+  bool move;
+  move = false;
+
+  if (currentHand.empty() == 1)
+    bottomCard = 0;
+  else
+    bottomCard =  currentHand.back();
 
 
-  cout << "\ncurrentHand.back(): " << currentHand.back();
-
-  cout << "\ngetFace( currentHand.back() ): " << getFace( currentHand.back() );
-
-
-  // cout << "\nhand"<< targetHandNumber <<".back()" << getFace( getHand( targetHandNumber ).back() );
-  bottomCard = getFace( currentHand.back() );
-
-
-  if(bottomCard == 0 && getFace( pseudoStack.back() == 13)){
+  if( ( getFace( getFace( bottomCard ) ) == 0) && ( getFace( pseudoStack.back() == 13) ) ){
     cout << "\nTargetHand is empty, moving kings ontop! ";
     move = true;
 
-  } else if (bottomCard == 0 && getFace( pseudoStack.back() != 13)){
+  } else if (getFace( bottomCard ) == 0 && getFace( pseudoStack.back() ) != 13){
       cout << "\nYou cannot move a card that is not a king to an empty pile";
 
-  } else if(bottomCard == getFace( pseudoStack.back() ) + 1){
+  } else if (
+       (( bottomCard <= 26 ) && ( pseudoStack.back() <= 26) )
+    || (( bottomCard >= 27 ) && ( pseudoStack.back() >= 27) )
+  ){
+    cout << "\nCannot place 2 cards of the same color ontop of one another";
+
+  } else if( getFace( bottomCard ) == getFace( pseudoStack.back() ) + 1){
     cout << "\nPseudoStack will fit ontop of targetpile";
     move = true;
 
@@ -267,8 +271,9 @@ bool Hand::checkTargetHand( deque<int> currentHand, vector<int> pseudoStack )
     cout << "\nCannot place PseudoStack ontop of targetpile"
          << "\nbottomCard: " << bottomCard << " pseudoStack.back(): " << getFace( pseudoStack.back() );
 
-  cout << endl;
 
+  
+  cout << endl;
   return move;
 
 }
